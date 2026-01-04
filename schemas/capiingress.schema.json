@@ -1,0 +1,119 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CAPIIngress",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "enum": ["capi.io/v1"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["CAPIIngress"]
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "namespace": {
+          "type": "string"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "required": ["serviceName", "serviceGroup", "instances"],
+      "properties": {
+        "serviceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "serviceGroup": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instances": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "capiNamespace",
+              "service",
+              "port",
+              "path",
+              "secured"
+            ],
+            "properties": {
+              "capiNamespace": {
+                "type": "string",
+                "enum": ["public", "internal", "OpNpExt"]
+              },
+              "service": {
+                "type": "string",
+                "minLength": 1
+              },
+              "port": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/.*"
+              },
+              "secured": {
+                "type": "boolean"
+              },
+              "openApi": {
+                "type": "string",
+                "format": "uri"
+              },
+              "routeGroupFirst": {
+                "type": "boolean"
+              },
+              "subscriptionGroup": {
+                "type": "string",
+                "minLength": 1
+              },
+              "rootContext": {
+                "type": "string"
+              },
+              "scheme": {
+                "type": "string",
+                "enum": ["http", "https"]
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ingress": {
+                "type": "string",
+                "format": "hostname"
+              },
+              "keepGroup": {
+                "type": "boolean"
+              },
+              "opaRego": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": ["rest", "websocket", "sse", "grpc"]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+

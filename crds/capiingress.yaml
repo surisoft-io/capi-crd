@@ -1,0 +1,120 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: capiingresses.capi.io
+spec:
+  group: capi.io
+  scope: Namespaced
+  names:
+    plural: capiingresses
+    singular: capiingress
+    kind: CAPIIngress
+    shortNames:
+      - capi-ing
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      additionalPrinterColumns:
+        - name: Service Name
+          type: string
+          jsonPath: .spec.serviceName
+        - name: Group
+          type: string
+          jsonPath: .spec.serviceGroup
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+      schema:
+        openAPIV3Schema:
+          type: object
+          required:
+            - spec
+          properties:
+            spec:
+              type: object
+              required:
+                - serviceName
+                - serviceGroup
+                - instances
+              properties:
+                serviceName:
+                  type: string
+                  minLength: 3
+                serviceGroup:
+                  type: string
+                  minLength: 3
+                instances:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    required:
+                      - capiNamespace
+                      - service
+                      - port
+                      - path
+                    properties:
+                      capiNamespace:
+                        type: string
+                        description: CAPI Instance name
+                        enum:
+                          - public
+                          - internal
+                          - OpNpExt
+                      service:
+                        type: string
+                        description: Kubernetes Service name
+                      port:
+                        type: integer
+                        minimum: 1
+                        maximum: 65535
+                      path:
+                        type: string
+                        pattern: "^/.*"
+                        description: HTTP path prefix
+                      secured:
+                        type: boolean
+                        default: false
+                      openApi:
+                        type: string
+                        format: uri
+                      routeGroupFirst:
+                        type: boolean
+                        default: false
+                      subscriptionGroup:
+                        type: string
+                        description: CAPI OAUTH2 subscription group
+                      rootContext:
+                        type: string
+                        pattern: "^/.*"
+                        description: If CAPI needs to forward requests to a different root context
+                      scheme:
+                        type: string
+                        description: HTTP or HTTPS
+                        enum:
+                          - http
+                          - https
+                        default: http
+                      version:
+                        type: string
+                        description: This service version
+                      ingress:
+                        type: string
+                        format: uri
+                        description: Ingress name
+                      keepGroup:
+                        type: boolean
+                        default: false
+                      opaRego:
+                        type: string
+                        description: OPA Rego policy
+                      type:
+                        type: string
+                        description: Type of Service
+                        enum:
+                          - rest
+                          - websocket
+                          - sse
+                          - grpc
+                        default: rest
