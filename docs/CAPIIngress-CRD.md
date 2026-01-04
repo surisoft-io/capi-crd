@@ -1,4 +1,4 @@
-# CAPIIngress – Custom Resource Definition (CRD)
+# CAPI Ingress CRD
 
 ## Overview
 
@@ -65,8 +65,8 @@ Logical name of the service registered in Consul.
 
 ### `spec.serviceGroup` (required)
 
-Logical grouping (team, environment, domain).  
-Used to ensure uniqueness in Consul.
+Logical grouping (environment, domain).  
+Used to ensure uniqueness both in Consul and CAPI.
 
 ---
 
@@ -74,7 +74,7 @@ Used to ensure uniqueness in Consul.
 
 List of registration intents.
 
-Each instance maps to one Consul environment and contributes metadata.
+Each instance maps to one CAPI namespace. 2 instances can point to the same Consul.
 
 ---
 
@@ -82,7 +82,7 @@ Each instance maps to one Consul environment and contributes metadata.
 
 | Field | Required | Description |
 |------|----------|-------------|
-| `capiNamespace` | yes | Logical Consul target |
+| `capiNamespace` | yes | CAPI instance target |
 | `service` | yes | Kubernetes Service name |
 | `port` | yes | Service port |
 | `path` | yes | Logical exposure path |
@@ -95,13 +95,13 @@ Each instance maps to one Consul environment and contributes metadata.
 
 - Exactly **one Consul service** per:
   `(serviceName + serviceGroup + consulHost)`
-- Multiple instances targeting the same Consul are flattened into metadata
+- Multiple CAPI instances targeting the same Consul are flattened into metadata
 
 ### Example Metadata
 
 ```yaml
 capi-instance-public-open-api: {...}
-capi-instance-private-secured: {...}
+capi-instance-private-open-api: {...}
 ```
 
 ---

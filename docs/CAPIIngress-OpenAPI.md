@@ -1,4 +1,4 @@
-# CAPIIngress – OpenAPI-style Specification
+# CAPI Ingress – OpenAPI Specification
 
 ## Resource
 
