@@ -80,14 +80,23 @@ Each instance maps to one CAPI namespace. 2 instances can point to the same Cons
 
 ## Instance Fields
 
-| Field | Required | Description |
-|------|----------|-------------|
+| Field | Required | Description | Default |
+|------|----------|-------------| ---------|
 | `capiNamespace` | yes | CAPI instance target |
 | `service` | yes | Kubernetes Service name |
 | `port` | yes | Service port |
-| `path` | yes | Logical exposure path |
-| `secured` | yes | Security flag |
-| `openApi` | no | OpenAPI URL |
+| `path` | yes | HTTP path prefix |
+| `secured` | no | Security flag | false
+| `openApi` | no | OpenAPI URL | null
+| `routeGroupFirst` | no | group will come before in the context | false
+| `subscriptionGroup` | no | If secured, CAPI will search for this group in the token subscriptions claim | null
+| `rootContext` | no | If not null, CAPI will forward all requests to this path | null
+| `scheme`| no | Service listening scheme | HTTP
+| `version`| no | Free version field, good to trigger a new CAPI route update | null
+| `ingress`| no | If not null, CAPI will forward all requests to this ingress | null
+| `keepGroup` | no | If not null CAPI will preserve the `group` in a dedicated header | null
+| `opaRego` | no | If not null CAPI will call this opa rego to authorize requests. | null
+| `type` | no | Type of service. Enum (rest, websocker, sse) | rest
 
 ---
 
