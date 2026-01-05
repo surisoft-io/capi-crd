@@ -1,0 +1,29 @@
+apiVersion: capi.io/v1
+kind: CAPIIngress
+metadata:
+  name: sample-service-ingress
+  namespace: dev
+spec:
+  serviceName: sample-service
+  serviceGroup: dev
+  instances:
+    - capiNamespace: public
+      service: sample-service
+      port: 8081
+      path: /sample-service
+      secured: true
+      openApi: https://someingress/openapi
+      scheme: https
+      ingress: https://someingress.com
+      routeGroupFirst: false
+      version: 1.0.3
+    - capiNamespace: internal
+      service: sample-service
+      port: 8081
+      path: /sample-service
+      secured: false
+      openApi: https://someingress/openapi
+      scheme: https
+      ingress: https://someingress.com
+      routeGroupFirst: false
+      version: 1.0.3
